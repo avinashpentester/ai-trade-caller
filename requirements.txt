@@ -1,0 +1,8 @@
+yfinance
+nsetools
+pandas
+sqlalchemy
+twilio
+python-dotenv
+apscheduler
+pytz
