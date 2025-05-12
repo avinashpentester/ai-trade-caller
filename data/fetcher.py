@@ -1,12 +1,16 @@
 # data/fetcher.py
 import yfinance as yf
-from nsetools import Nse
+import pandas as pd
+import requests
 import time
 
 def get_all_stock_symbols():
-    nse = Nse()
-    codes = nse.get_stock_codes()
-    return [symbol + ".NS" for symbol in list(codes.keys())[1:]]  # skip header
+    url = "https://archives.nseindia.com/content/equities/EQUITY_L.csv"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    r = requests.get(url, headers=headers)
+    r.encoding = 'utf-8'
+    df = pd.read_csv(pd.compat.StringIO(r.text))
+    return [symbol + ".NS" for symbol in df['SYMBOL'].tolist()]
 
 def fetch_stock_data(symbols, interval="1d", period="5d"):
     data = {}
